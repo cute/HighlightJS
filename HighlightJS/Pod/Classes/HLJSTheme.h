@@ -1,5 +1,5 @@
 //
-//  HighlightJSTheme.h
+//  HLJSTheme.h
 //  HighlightJS
 //
 //  Created by Li Guangming on 2019/5/13.
@@ -21,7 +21,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HighlightJSTheme : NSObject
+@interface HLJSTheme : NSObject
 
 @property(nonatomic, strong) NSString *theme;
 @property(nonatomic, strong) NSString *lightTheme;

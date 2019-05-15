@@ -1,5 +1,5 @@
 //
-//  HighlightJSHTMLUtils.h
+//  NSString+HLJS.h
 //  HighlightJS
 //
 //  Created by Li Guangming on 2019/5/13.
@@ -10,10 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HighlightJSHTMLUtils : NSObject
-
-+ (NSString * _Nullable )decode:(NSString *)entity;
-
+@interface NSString(HLJS)
+- (NSString *)htmlEntityDecode;
 @end
 
 NS_ASSUME_NONNULL_END

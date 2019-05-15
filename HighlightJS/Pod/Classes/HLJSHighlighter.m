@@ -1,27 +1,27 @@
 //
-//  HighlightJS.m
+//  HLJSHighlighter.m
 //  HighlightJS
 //
 //  Created by Li Guangming on 2019/5/13.
 //  Copyright © 2019 Li Guangming. All rights reserved.
 //
 
-#import "HighlightJS.h"
-#import "HighlightJSHTMLUtils.h"
+#import "HLJSHighlighter.h"
+#import "NSString+HLJS.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 
-@interface HighlightJS ()
-@property (nonatomic, strong) JSContext *jsContext;
-@property (nonatomic, strong) NSString *hljs;
+static NSString * const kHTMLStart = @"<";
+static NSString * const kHTMLSpanStart = @"span class=\"";
+static NSString * const kHTMLSpanStartClose = @"\">";
+static NSString * const kHTMLSpanEnd = @"/span>";
+
+@interface HLJSHighlighter ()
+@property (nonatomic, strong) JSContext *context;
 @property (nonatomic, strong) NSBundle *bundle;
-@property (nonatomic, strong) NSString *htmlStart;
-@property (nonatomic, strong) NSString *spanStart;
-@property (nonatomic, strong) NSString *spanStartClose;
-@property (nonatomic, strong) NSString *spanEnd;
 @property (nonatomic, strong) NSRegularExpression *htmlEscape;
 @end
 
-@implementation HighlightJS
+@implementation HLJSHighlighter
 /**
  Default init method.
  
@@ -32,23 +32,23 @@
 {
     self = [super init];
     if (self) {
-        self.hljs = @"window.hljs";
-        self.htmlStart = @"<";
-        self.spanStart = @"span class=\"";
-        self.spanStartClose = @"\">";
-        self.spanEnd = @"/span>";
-        self.htmlEscape = [NSRegularExpression regularExpressionWithPattern:@"&#?[a-zA-Z0-9]+?;"
-                                                                    options:NSRegularExpressionCaseInsensitive error:nil];
-        
-        self.jsContext = [JSContext new];
-        [self.jsContext evaluateScript:@"var window = {};"];
-        self.bundle = [NSBundle bundleForClass:[HighlightJS class]];
+        self.context = [JSContext new];
+
+        self.bundle = [NSBundle bundleForClass:[HLJSHighlighter class]];
         NSString *hgPath = [self.bundle pathForResource:@"highlight.min" ofType:@"js"];
         NSString *content = [NSString stringWithContentsOfFile:hgPath encoding:NSUTF8StringEncoding error:nil];
         if (content) {
-            [self.jsContext evaluateScript:content];
-            [self setThemeWithName:@"monokai"];
+            NSString *script = [NSString stringWithFormat:@"var window = {};"
+                                "function hljs_do_highlight (c, l, d) {"
+                                "   return (d=window.hljs,l ? d.highlight(l, c) : d.highlightAuto(c)).value;"
+                                "}"];
+            [self.context evaluateScript:script];
+            [self.context evaluateScript:content];
+            [self setThemeWithName:@"xcode"];
         }
+        self.htmlEscape = [NSRegularExpression regularExpressionWithPattern:@"&#?[a-zA-Z0-9]+?;"
+                                                                    options:NSRegularExpressionCaseInsensitive
+                                                                      error:nil];
     }
     return self;
 }
@@ -65,10 +65,10 @@
     NSString *file = [NSString stringWithFormat:@"%@.min", name];
     NSString *cssPath = [self.bundle pathForResource:file ofType:@"css"];
     NSString *themeString = [NSString stringWithContentsOfFile:cssPath encoding:NSUTF8StringEncoding error:nil];
-    self.theme = [[HighlightJSTheme alloc] initWithThemeString:themeString];
+    self.theme = [[HLJSTheme alloc] initWithThemeString:themeString];
 }
 
-- (void)setTheme:(HighlightJSTheme *)theme
+- (void)setTheme:(HLJSTheme *)theme
 {
     _theme = theme;
     if (self.themeChangedBlock) {
@@ -88,22 +88,13 @@
 
 - (NSAttributedString *)highlightWithCode:(NSString *)code languageName:(NSString *)languageName fastRender:(BOOL)fastRender
 {
-    NSString *fixedCode = [code stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"];
-    fixedCode = [fixedCode stringByReplacingOccurrencesOfString:@"\'" withString:@"\\\'"];
-    fixedCode = [fixedCode stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
-    fixedCode = [fixedCode stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
-    fixedCode = [fixedCode stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    JSValue *func = self.context[@"hljs_do_highlight"];
 
-    NSString *command;
-    if (languageName) {
-        command = [NSString stringWithFormat:@"%@.highlight(\"%@\",\"%@\").value;", self.hljs, languageName, fixedCode];
-    } else {
-        // language auto detection
-        command = [NSString stringWithFormat:@"%@.highlightAuto(\"%@\").value;", self.hljs, fixedCode];
+    if ([func isUndefined]) {
+        return nil;
     }
 
-    JSValue *res = [self.jsContext evaluateScript:command];
-
+    JSValue *res = [func callWithArguments:@[code, languageName]];
     if (![res isString]) {
         return nil;
     }
@@ -147,8 +138,8 @@
  */
 - (NSArray *)supportedLanguages
 {
-    NSString *command = [NSString stringWithFormat:@"%@.listLanguages();", self.hljs];
-    JSValue *res = [self.jsContext evaluateScript:command];
+    NSString *command = @"window.hljs.listLanguages();";
+    JSValue *res = [self.context evaluateScript:command];
     return [res toArray];
 }
 
@@ -163,7 +154,7 @@
     
     while (!scanner.isAtEnd) {
         BOOL ended = NO;
-        if ([scanner scanUpToString:self.htmlStart intoString:&scannedString]) {
+        if ([scanner scanUpToString:kHTMLStart intoString:&scannedString]) {
             if (scanner.isAtEnd) {
                 ended = YES;
             }
@@ -183,12 +174,12 @@
         
         NSString *nextChar = [string substringWithRange:NSMakeRange(scanner.scanLocation, 1)];
         if([nextChar isEqualToString:@"s"]) {
-            scanner.scanLocation += self.spanStart.length;
-            [scanner scanUpToString:self.spanStartClose intoString:&scannedString];
-            scanner.scanLocation += self.spanStartClose.length;
+            scanner.scanLocation += kHTMLSpanStart.length;
+            [scanner scanUpToString:kHTMLSpanStartClose intoString:&scannedString];
+            scanner.scanLocation += kHTMLSpanStartClose.length;
             [propStack addObject:scannedString];
         } else if([nextChar isEqualToString:@"/"]) {
-            scanner.scanLocation += self.spanEnd.length;
+            scanner.scanLocation += kHTMLSpanEnd.length;
             [propStack removeLastObject];
         } else {
             NSAttributedString *attrScannedString = [self.theme applyStyleToString:@"<" styleList:propStack];
@@ -198,20 +189,19 @@
         
         scannedString = nil;
     }
-    
+
     NSArray *results = [self.htmlEscape matchesInString:resultString.string
                                                 options:NSMatchingReportCompletion
                                                   range:NSMakeRange(0, resultString.length)];
 
-    
-    NSUInteger locOffset = 0;
+    NSUInteger offset = 0;
     for (NSTextCheckingResult *result in results) {
-        NSRange fixedRange = NSMakeRange(result.range.location-locOffset, result.range.length);
+        NSRange fixedRange = NSMakeRange(result.range.location-offset, result.range.length);
         NSString *entity = [resultString.string substringWithRange:fixedRange];
-        NSString *decodedEntity = [HighlightJSHTMLUtils decode:entity];
+        NSString *decodedEntity = [entity htmlEntityDecode];
         if (decodedEntity) {
             [resultString replaceCharactersInRange:fixedRange withString:decodedEntity];
-            locOffset += result.range.length - 1;
+            offset += result.range.length - 1;
         }
     }
     return resultString;

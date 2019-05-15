@@ -7,17 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5233A93D228A9286006DF260 /* HLJSLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5233A93C228A9286006DF260 /* HLJSLayoutManager.m */; };
 		523939D52289010D0068A072 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939D42289010D0068A072 /* AppDelegate.m */; };
 		523939D82289010D0068A072 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939D72289010D0068A072 /* ViewController.m */; };
 		523939DB2289010D0068A072 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 523939D92289010D0068A072 /* Main.storyboard */; };
 		523939DD2289010F0068A072 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 523939DC2289010F0068A072 /* Assets.xcassets */; };
 		523939E02289010F0068A072 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 523939DE2289010F0068A072 /* LaunchScreen.storyboard */; };
 		523939E32289010F0068A072 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939E22289010F0068A072 /* main.m */; };
-		523939FF22893FB30068A072 /* HighlightJSAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FB22893FB30068A072 /* HighlightJSAttributedString.m */; };
-		52393A0022893FB30068A072 /* HighlightJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FC22893FB30068A072 /* HighlightJS.m */; };
-		52393A0122893FB30068A072 /* HighlightJSHTMLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FD22893FB30068A072 /* HighlightJSHTMLUtils.m */; };
-		52393A0222893FB30068A072 /* HighlightJSTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FE22893FB30068A072 /* HighlightJSTheme.m */; };
-		52393A052289487A0068A072 /* HighlightView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52393A042289487A0068A072 /* HighlightView.m */; };
+		523939FF22893FB30068A072 /* HLJSTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FB22893FB30068A072 /* HLJSTextStorage.m */; };
+		52393A0022893FB30068A072 /* HLJSHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FC22893FB30068A072 /* HLJSHighlighter.m */; };
+		52393A0122893FB30068A072 /* NSString+HLJS.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FD22893FB30068A072 /* NSString+HLJS.m */; };
+		52393A0222893FB30068A072 /* HLJSTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 523939FE22893FB30068A072 /* HLJSTheme.m */; };
+		52393A052289487A0068A072 /* HLJSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 52393A042289487A0068A072 /* HLJSTextView.m */; };
 		52393B0422894F220068A072 /* vs.min.css in Resources */ = {isa = PBXBuildFile; fileRef = 52393A0822894F210068A072 /* vs.min.css */; };
 		52393B0522894F220068A072 /* atelier-seaside-dark.min.css in Resources */ = {isa = PBXBuildFile; fileRef = 52393A0922894F210068A072 /* atelier-seaside-dark.min.css */; };
 		52393B0622894F220068A072 /* brown-paper.min.css in Resources */ = {isa = PBXBuildFile; fileRef = 52393A0A22894F210068A072 /* brown-paper.min.css */; };
@@ -271,6 +272,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5233A93B228A9286006DF260 /* HLJSLayoutManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLJSLayoutManager.h; sourceTree = "<group>"; };
+		5233A93C228A9286006DF260 /* HLJSLayoutManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLJSLayoutManager.m; sourceTree = "<group>"; };
 		523939D02289010D0068A072 /* HighlightJS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HighlightJS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		523939D32289010D0068A072 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		523939D42289010D0068A072 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -281,16 +284,16 @@
 		523939DF2289010F0068A072 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		523939E12289010F0068A072 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		523939E22289010F0068A072 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		523939F722893FB30068A072 /* HighlightJSAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightJSAttributedString.h; sourceTree = "<group>"; };
-		523939F822893FB30068A072 /* HighlightJSTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightJSTheme.h; sourceTree = "<group>"; };
-		523939F922893FB30068A072 /* HighlightJSHTMLUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightJSHTMLUtils.h; sourceTree = "<group>"; };
-		523939FA22893FB30068A072 /* HighlightJS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightJS.h; sourceTree = "<group>"; };
-		523939FB22893FB30068A072 /* HighlightJSAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightJSAttributedString.m; sourceTree = "<group>"; };
-		523939FC22893FB30068A072 /* HighlightJS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightJS.m; sourceTree = "<group>"; };
-		523939FD22893FB30068A072 /* HighlightJSHTMLUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightJSHTMLUtils.m; sourceTree = "<group>"; };
-		523939FE22893FB30068A072 /* HighlightJSTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightJSTheme.m; sourceTree = "<group>"; };
-		52393A032289487A0068A072 /* HighlightView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HighlightView.h; sourceTree = "<group>"; };
-		52393A042289487A0068A072 /* HighlightView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HighlightView.m; sourceTree = "<group>"; };
+		523939F722893FB30068A072 /* HLJSTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLJSTextStorage.h; sourceTree = "<group>"; };
+		523939F822893FB30068A072 /* HLJSTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLJSTheme.h; sourceTree = "<group>"; };
+		523939F922893FB30068A072 /* NSString+HLJS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HLJS.h"; sourceTree = "<group>"; };
+		523939FA22893FB30068A072 /* HLJSHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLJSHighlighter.h; sourceTree = "<group>"; };
+		523939FB22893FB30068A072 /* HLJSTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLJSTextStorage.m; sourceTree = "<group>"; };
+		523939FC22893FB30068A072 /* HLJSHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLJSHighlighter.m; sourceTree = "<group>"; };
+		523939FD22893FB30068A072 /* NSString+HLJS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HLJS.m"; sourceTree = "<group>"; };
+		523939FE22893FB30068A072 /* HLJSTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLJSTheme.m; sourceTree = "<group>"; };
+		52393A032289487A0068A072 /* HLJSTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HLJSTextView.h; sourceTree = "<group>"; };
+		52393A042289487A0068A072 /* HLJSTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HLJSTextView.m; sourceTree = "<group>"; };
 		52393A0822894F210068A072 /* vs.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = vs.min.css; sourceTree = "<group>"; };
 		52393A0922894F210068A072 /* atelier-seaside-dark.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "atelier-seaside-dark.min.css"; sourceTree = "<group>"; };
 		52393A0A22894F210068A072 /* brown-paper.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "brown-paper.min.css"; sourceTree = "<group>"; };
@@ -557,16 +560,18 @@
 		5233A93A2289755A006DF260 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				523939FA22893FB30068A072 /* HighlightJS.h */,
-				523939FC22893FB30068A072 /* HighlightJS.m */,
-				523939F722893FB30068A072 /* HighlightJSAttributedString.h */,
-				523939FB22893FB30068A072 /* HighlightJSAttributedString.m */,
-				523939F922893FB30068A072 /* HighlightJSHTMLUtils.h */,
-				523939FD22893FB30068A072 /* HighlightJSHTMLUtils.m */,
-				523939F822893FB30068A072 /* HighlightJSTheme.h */,
-				523939FE22893FB30068A072 /* HighlightJSTheme.m */,
-				52393A032289487A0068A072 /* HighlightView.h */,
-				52393A042289487A0068A072 /* HighlightView.m */,
+				523939FA22893FB30068A072 /* HLJSHighlighter.h */,
+				523939FC22893FB30068A072 /* HLJSHighlighter.m */,
+				5233A93B228A9286006DF260 /* HLJSLayoutManager.h */,
+				5233A93C228A9286006DF260 /* HLJSLayoutManager.m */,
+				523939F722893FB30068A072 /* HLJSTextStorage.h */,
+				523939FB22893FB30068A072 /* HLJSTextStorage.m */,
+				52393A032289487A0068A072 /* HLJSTextView.h */,
+				52393A042289487A0068A072 /* HLJSTextView.m */,
+				523939F822893FB30068A072 /* HLJSTheme.h */,
+				523939FE22893FB30068A072 /* HLJSTheme.m */,
+				523939F922893FB30068A072 /* NSString+HLJS.h */,
+				523939FD22893FB30068A072 /* NSString+HLJS.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1214,13 +1219,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				523939FF22893FB30068A072 /* HighlightJSAttributedString.m in Sources */,
-				52393A0022893FB30068A072 /* HighlightJS.m in Sources */,
+				523939FF22893FB30068A072 /* HLJSTextStorage.m in Sources */,
+				52393A0022893FB30068A072 /* HLJSHighlighter.m in Sources */,
 				523939D82289010D0068A072 /* ViewController.m in Sources */,
-				52393A0222893FB30068A072 /* HighlightJSTheme.m in Sources */,
+				52393A0222893FB30068A072 /* HLJSTheme.m in Sources */,
 				523939E32289010F0068A072 /* main.m in Sources */,
-				52393A052289487A0068A072 /* HighlightView.m in Sources */,
-				52393A0122893FB30068A072 /* HighlightJSHTMLUtils.m in Sources */,
+				52393A052289487A0068A072 /* HLJSTextView.m in Sources */,
+				5233A93D228A9286006DF260 /* HLJSLayoutManager.m in Sources */,
+				52393A0122893FB30068A072 /* NSString+HLJS.m in Sources */,
 				523939D52289010D0068A072 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

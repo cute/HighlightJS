@@ -1,14 +1,14 @@
 //
-//  HighlightJSTheme.m
+//  HLJSTheme.m
 //  HighlightJS
 //
 //  Created by Li Guangming on 2019/5/13.
 //  Copyright © 2019 Li Guangming. All rights reserved.
 //
 
-#import "HighlightJSTheme.h"
+#import "HLJSTheme.h"
 
-@implementation HighlightJSTheme
+@implementation HLJSTheme
 
 - (instancetype)initWithThemeString:(NSString *)themeString
 {
@@ -25,7 +25,6 @@
             bkgColorHex = self.strippedTheme[@".hljs"][@"background-color"];
         }
         if (bkgColorHex) {
-            NSLog(@"self.strippedTheme:%@", bkgColorHex);
             self.themeBackgroundColor = [self colorWithHexString:bkgColorHex];
         } else {
             self.themeBackgroundColor = [HJSColor colorWithWhite:1.0 alpha:1.0];
@@ -185,7 +184,13 @@
 
 - (HJSFont *)fontForCSSStyle:(NSString *)fontStyle
 {
-    NSArray *bolds = @[@"bold", @"bolder", @"600", @"700", @"800", @"900"];
+    static NSArray *bolds;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        bolds = @[@"bold", @"bolder", @"600", @"700", @"800", @"900"];
+    });
+
     if ([bolds containsObject:fontStyle]) {
         return self.boldCodeFont;
     }

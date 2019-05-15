@@ -15,43 +15,36 @@
 #import <AppKit/AppKit.h>
 #endif
 
-#import "HighlightJS.h"
+#import "HLJSHighlighter.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// Highlighting Delegate
-@protocol HighlightJSDelegate <NSObject>
+/// HLJSTextStorageDelegate
+@protocol HLJSTextStorageDelegate <NSObject>
 /**
  If this method returns *false*, the highlighting process will be skipped for this range.
- 
  - parameter range: NSRange
- 
  - returns: Bool
  */
 - (BOOL)shouldHighlight:(NSRange)range;
 
 /**
  Called after a range of the string was highlighted, if there was an error **success** will be *false*.
- 
  - parameter range:   NSRange
  - parameter success: Bool
  */
 - (BOOL)didHighlight:(NSRange)range success:(BOOL)success;
+
 @end
 
 // NSTextStorage subclass. Can be used to dynamically highlight code.
-@interface HighlightJSAttributedString : NSTextStorage
-
+@interface HLJSTextStorage : NSTextStorage
 // Internal Storage
 @property (nonatomic, strong) NSMutableAttributedString *stringStorage;
-
 // HighlightJS instace used internally for highlighting. Use this for configuring the theme.
-@property (nonatomic, strong) HighlightJS *highlightJS;
-
-@property (nonatomic, weak) id<HighlightJSDelegate> highlightDelegate;
-
+@property (nonatomic, strong) HLJSHighlighter *highlighter;
+@property (nonatomic, weak) id<HLJSTextStorageDelegate> highlightDelegate;
 @property (nonatomic, copy) NSString *language;
-
 @end
 
 NS_ASSUME_NONNULL_END
