@@ -154,6 +154,7 @@ static NSString * const kHTMLSpanEnd = @"/span>";
     
     while (!scanner.isAtEnd) {
         BOOL ended = NO;
+
         if ([scanner scanUpToString:kHTMLStart intoString:&scannedString]) {
             if (scanner.isAtEnd) {
                 ended = YES;
@@ -167,18 +168,15 @@ static NSString * const kHTMLSpanEnd = @"/span>";
                 continue;
             }
         }
-        
+
         scanner.scanLocation += 1;
-        
-        NSString *string = scanner.string;
-        
-        NSString *nextChar = [string substringWithRange:NSMakeRange(scanner.scanLocation, 1)];
-        if([nextChar isEqualToString:@"s"]) {
+        unichar nextChar = [scanner.string characterAtIndex:scanner.scanLocation];
+        if (nextChar == 's') {
             scanner.scanLocation += kHTMLSpanStart.length;
             [scanner scanUpToString:kHTMLSpanStartClose intoString:&scannedString];
             scanner.scanLocation += kHTMLSpanStartClose.length;
             [propStack addObject:scannedString];
-        } else if([nextChar isEqualToString:@"/"]) {
+        } else if(nextChar == '/') {
             scanner.scanLocation += kHTMLSpanEnd.length;
             [propStack removeLastObject];
         } else {
@@ -186,7 +184,6 @@ static NSString * const kHTMLSpanEnd = @"/span>";
             [resultString appendAttributedString:attrScannedString];
             scanner.scanLocation += 1;
         }
-        
         scannedString = nil;
     }
 

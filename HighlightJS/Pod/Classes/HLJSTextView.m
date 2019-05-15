@@ -75,6 +75,13 @@ static void *HLJSTextViewContext = &HLJSTextViewContext;
 {
     if (context == HLJSTextViewContext) {
         [self setNeedsDisplay];
+        if (self.lineCursorEnabled) {
+            self.hljsLayoutManager.selectedRange = self.selectedRange;
+            NSRange glyphRange = [self.hljsLayoutManager.textStorage.string paragraphRangeForRange:self.selectedRange];
+            glyphRange = [self.hljsLayoutManager glyphRangeForCharacterRange:glyphRange actualCharacterRange:NULL];
+            self.hljsLayoutManager.selectedRange = glyphRange;
+            [self.hljsLayoutManager invalidateDisplayForGlyphRange:glyphRange];
+        }
     }
     else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -134,35 +141,6 @@ static void *HLJSTextViewContext = &HLJSTextViewContext;
     }
 }
 
-#pragma mark - Line Drawing
-
-// Original implementation sourced from: https://github.com/alldritt/TextKit_LineNumbers
-
-- (void)drawRect:(CGRect)rect
-{
-    //  Drag the line number gutter background.  The line numbers them selves are drawn by LineNumberLayoutManager.
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGRect bounds = self.bounds;
-    CGFloat height = MAX(CGRectGetHeight(bounds), self.contentSize.height) + 200;
-    
-    // Set the regular fill
-    CGContextSetFillColorWithColor(context, self.gutterBackgroundColor.CGColor);
-    CGContextFillRect(context, CGRectMake(bounds.origin.x, bounds.origin.y, self.hljsLayoutManager.gutterWidth, height));
-    
-    // Draw line
-    CGContextSetFillColorWithColor(context, self.gutterLineColor.CGColor);
-    CGContextFillRect(context, CGRectMake(self.hljsLayoutManager.gutterWidth, bounds.origin.y, 0.5, height));
-    
-    if (self.lineCursorEnabled) {
-        self.hljsLayoutManager.selectedRange = self.selectedRange;
-        NSRange glyphRange = [self.hljsLayoutManager.textStorage.string paragraphRangeForRange:self.selectedRange];
-        glyphRange = [self.hljsLayoutManager glyphRangeForCharacterRange:glyphRange actualCharacterRange:NULL];
-        self.hljsLayoutManager.selectedRange = glyphRange;
-        [self.hljsLayoutManager invalidateDisplayForGlyphRange:glyphRange];
-    }
-}
-
-
 #pragma mark - Gestures
 
 // Sourced from: https://github.com/srijs/NLTextView
@@ -183,9 +161,8 @@ static void *HLJSTextViewContext = &HLJSTextViewContext;
     if (sender.state == UIGestureRecognizerStateBegan) {
         self.startRange = self.selectedRange;
     }
-    
+
     CGFloat cursorLocation = MAX(self.startRange.location + [sender translationInView:self].x * kCursorVelocity, 0);
-    
     self.selectedRange = NSMakeRange(cursorLocation, 0);
 }
 
@@ -205,6 +182,5 @@ static void *HLJSTextViewContext = &HLJSTextViewContext;
         self.selectedRange = NSMakeRange(cursorLocation, fabs(self.startRange.location - cursorLocation));
     }
 }
-
 
 @end
